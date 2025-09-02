@@ -1,18 +1,20 @@
-## 环境要求
+# 假设你有一个最简单的 ERC20 代币合约，里面有一个函数
 
-- Node.js >= 18
-- 浏览器已安装 [MetaMask](https://metamask.io/)
-- Sepolia 测试网 ETH (可通过 [Goole Cloud Web3](https://cloud.google.com/application/web3/faucet/ethereum/sepolia) 领取)
+```solidity
+function balanceOf(address owner) external view returns (uint256);
 
----
+```
 
-## 安装步骤
+它的 ABI 片段会长这样：
 
-```bash
-# 安装依赖
-yarn install
-
-# 启动
-yarn dev
-
+```json
+[
+  {
+    "constant": true,
+    "inputs": [{ "name": "owner", "type": "address" }],
+    "name": "balanceOf",
+    "outputs": [{ "name": "", "type": "uint256" }],
+    "type": "function"
+  }
+]
 ```

@@ -26,20 +26,20 @@ export default function App() {
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
-  const showStatus = (msg: string, delayMs: number = 5000) => {
-    setStatus(msg);
+  // const showStatus = (msg: string, delayMs: number = 5000) => {
+  //   setStatus(msg);
 
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
+  //   if (timerRef.current) {
+  //     clearTimeout(timerRef.current);
+  //   }
 
-    if (delayMs > 0) {
-      timerRef.current = setTimeout(() => {
-        setStatus("");
-        timerRef.current = null;
-      }, delayMs);
-    }
-  };
+  //   if (delayMs > 0) {
+  //     timerRef.current = setTimeout(() => {
+  //       setStatus("");
+  //       timerRef.current = null;
+  //     }, delayMs);
+  //   }
+  // };
 
   const connect = async () => {
     if (!window.ethereum) return alert("请安装 MetaMask 或其它以太坊钱包");
@@ -93,7 +93,6 @@ export default function App() {
       }
 
       setStatus("查询报价 (getAmountsOut)...");
-      // getAmountsOut 是只读
       const amountsOut = await router.getAmountsOut(amountIn, path);
       const estimatedOut = amountsOut[amountsOut.length - 1]; // 最后一项是输出数量 (bigint)
 
@@ -106,7 +105,6 @@ export default function App() {
         (estimatedOut * BigInt(Math.max(0, 100 - Math.round(slippageNum)))) /
         100n;
 
-      // 读取 tokenOut decimals 用于展示
       const tokenOutContract = new ethers.Contract(toAddr, ERC20_ABI, provider);
       const tokenOutDecimals = await tokenOutContract.decimals();
 
@@ -117,13 +115,6 @@ export default function App() {
         )}, 最低接受: ${ethers.formatUnits(amountOutMin, tokenOutDecimals)}`
       );
       await sleep(4000);
-
-      // setStatus(
-      //   `预计输出: ${ethers.formatUnits(
-      //     estimatedOut,
-      //     tokenOutDecimals
-      //   )}, 最低接受: ${ethers.formatUnits(amountOutMin, tokenOutDecimals)}`
-      // );
 
       const routerWithSigner = router.connect(signer);
       const deadline = Math.floor(Date.now() / 1000) + 60 * 20; // 20 分钟有效期
